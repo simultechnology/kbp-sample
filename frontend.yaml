@@ -28,5 +28,19 @@ spec:
           limits:
             cpu: "1.0"
             memory: "1G"
+        volumeMounts:
+          - name: passwd-volume
+            readOnly: true
+            mountPath: "/etc/redis-passwd"
+        env:
+        - name: JOURNAL_ENTRIES
+          valueFrom:
+            configMapKeyRef:
+              name: frontend-config
+              key: journalEntries
+      volumes:
+        - name: passwd-volume
+          secret:
+            secretName: redis-passwd
       dnsPolicy: ClusterFirst
       restartPolicy: Always

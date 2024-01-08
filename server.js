@@ -21,7 +21,7 @@ async function main() {
 
     const port = 8080;
 
-    const requestHandler = (request, response) => {
+    const requestHandler = async (request, response) => {
         console.log(request.url);
         if (!request.url.startsWith('/api')) {
             response.writeHead(404);
@@ -34,41 +34,32 @@ async function main() {
             return;
         }
         const key = 'journal-key';
-        client.get(key, (err, value) => {
-            if (err) {
-                response.writeHead(500);
-                response.end(err.toString());
-                return;
-            }
-            var journals = [];
+        try {
+            const value = await client.get(key);
+            let journals = [];
             if (value) {
                 journals = JSON.parse(value);
             }
             if (request.method === 'GET') {
                 response.writeHead(200);
                 response.end(JSON.stringify(journals));
+            } else if (request.method === 'POST') {
+                let body = [];
+                request.on('data', (chunk) => {
+                    body.push(chunk);
+                }).on('end', async () => {
+                    body = Buffer.concat(body).toString();
+                    const msg = JSON.parse(body);
+                    journals.push(msg);
+                    await client.set(key, JSON.stringify(journals));
+                    response.writeHead(200);
+                    response.end(JSON.stringify(journals));
+                });
             }
-            if (request.method === 'POST') {
-                try {
-                    let body = [];
-                    request.on('data', (chunk) => {
-                        body.push(chunk);
-                    }).on('end', () => {
-                        body = Buffer.concat(body).toString();
-                        const msg = JSON.parse(body);
-                        journals.push(msg);
-                        client.set(key, JSON.stringify(journals));
-                        response.writeHead(200);
-                        response.end(JSON.stringify(journals));
-                    });
-                } catch (err) {
-                    response.writeHeader(500);
-                    response.end(err.toString());
-
-                }
-            }
-        });
-
+        } catch (err) {
+            response.writeHead(500);
+            response.end(err.toString());
+        }
     }
 
     const server = http.createServer(requestHandler);
