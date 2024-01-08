@@ -4,4 +4,13 @@ metadata:
   name: redis-config
 data:
   launch.sh: |
-    IyEvYmluL3NoCgpQQVNTV09SRD0kKGNhdCAvZXRjL3JlZGlzLXBhc3N3ZC9wYXNzd2QpCgppZiBbWyAiJHtIT1NUTkFNRX0iID09ICJyZWRpcy0wIiBdXTsgdGhlbgogIHJlZGlzLXNlcnZlciAtLXJlcXVpcmVwYXNzICR7UEFTU1dPUkR9CmVsc2UKICByZWRpcy1zZXJ2ZXIgLS1zbGF2ZW9mIHJlZGlzLTAucmVkaXMgNjM3OSAtLW1hc3RlcmF1dGggJHtQQVNTV09SRH0KICAgIC0tcmVxdWlyZXBhc3MgJHtQQVNTV09SRH0KZmk=
+    #!/bin/sh
+
+    PASSWD=$(cat /etc/redis-passwd/passwd)
+
+    if [[ "${HOSTNAME}" == "redis-0" ]]; then
+      redis-server --requirepass ${PASSWD}
+    else
+      redis-server --slaveof redis-0.redis 6379 --masterauth ${PASSWD}
+        --requirepass ${PASSWD}
+    fi

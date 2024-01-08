@@ -1,16 +1,22 @@
 
 # Creating a Replicated Application
 
-## Redis
+install metrics server
 
 ``` 
-kustomize build redis/ | kubectl apply -f - -n redis
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 ## Frontend
 
 ``` 
 kustomize build frontend/ | kubectl apply -f - -n frontend
+```
+
+## Redis
+
+``` 
+kustomize build redis/ | kubectl apply -f - -n redis
 ```
 
 
