@@ -1,30 +1,10 @@
 
 # Creating a Replicated Application
 
-## Frontend
+## Prerequisite
 
-``` 
-kustomize build frontend/ | kubectl apply -f -
 ```
-
-
-### Deployment
-
-``` 
-kubectl apply -f frontend/deployment.yaml -n frontend
-```
-
-### Setting Up an External Ingress for HTTP Traffic
-
-``` 
-kubectl apply -f frontend/service.yaml -n frontend
-kubectl apply -f frontend/ingress.yaml -n frontend
-```
-
-### Configuring an Application with ConfigMaps
-
-``` 
-kubectl apply -f frontend/config.yaml -n frontend
+kubectl create ns redis
 ```
 
 
