@@ -28,3 +28,9 @@ kubectl apply -f ingress.yaml -n frontend
 kubectl apply -f config.yaml -n frontend
 ```
 
+### create a secret password for your Redis database
+
+``` 
+kubectl apply -f redis-secret.yaml -n frontend
+```
+
