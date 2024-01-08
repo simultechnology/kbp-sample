@@ -5,3 +5,4 @@ resources:
   - config.yaml
   - redis-secret.yaml
   - statefulset.yaml
+  - service.yaml

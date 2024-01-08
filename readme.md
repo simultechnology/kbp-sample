@@ -1,6 +1,16 @@
 
 # Creating a Replicated Application
 
+## Pre requisite
+
+### Install Nginx ingress controller
+
+``` 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+```
+
+
+
 install metrics server
 
 ``` 
