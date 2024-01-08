@@ -19,6 +19,12 @@ kustomize build frontend/ | kubectl apply -f - -n frontend
 kustomize build redis/ | kubectl apply -f - -n redis
 ```
 
+## File-server
+
+``` 
+kustomize build fileserver/ | kubectl apply -f - -n frontend
+```
+
 
 ### create a secret password for your Redis database
 
